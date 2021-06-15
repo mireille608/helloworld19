@@ -1,29 +1,31 @@
 pipeline {
   agent any
+  tools{
+    mavern 'M2_HOME'
+  }
+  environment {
+    registry = "mireille2012/devop-pipeline"
+    registryCredential = 'dockerID'
+}
   stages{
     stage('build'){
       steps{
-        echo "build step"
-        sleep 10
+        sh 'mvn clean'
+        sh 'mvn install'
+        sh 'mvn package'
       }
     }
      stage('test'){
       steps{
         echo "test step"
-        sleep 10
+        sh 'mvn test'
       }
     }
      stage('deploy'){
       steps{
-        echo "deploy step"
-        sleep 10
+       script {
+        docker.build registry + ":$BUILD_NUMBER"
       }
-    }
-     stage('docker'){
-      steps{
-        echo "image step"
-        sleep 10
-      }
-    }
+     } 
   }
 }
