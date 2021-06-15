@@ -1,7 +1,7 @@
 pipeline {
   agent any
   tools{
-    mavern 'M2_HOME'
+    maven 'M2_HOME'
   }
   environment {
     registry = "mireille2012/devop-pipeline"
